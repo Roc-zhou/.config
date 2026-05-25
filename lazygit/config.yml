@@ -6,3 +6,8 @@ git:
   commitPrefix:
     - pattern: ".*(SZXD.*)$"
       replace: '$1'
+
+gui:
+  branchColorPatterns:
+    '^(main|master)': '#ff5733'   # main 或 master 分支显示浅蓝色
+    '^release': '#11aaff'          # release 开头的分支显示亮橙色
