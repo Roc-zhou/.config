@@ -1,0 +1,8 @@
+os:
+  edit: 'code --goto {{filename}}:{{line}}'
+  editPreset: "vscode"
+
+git:
+  commitPrefix:
+    - pattern: ".*(SZXD.*)$"
+      replace: '$1'
