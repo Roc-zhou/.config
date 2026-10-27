@@ -28,6 +28,15 @@ alias gs="git status"
 alias gp="git pull"
 alias ga="git add ."
 
+# 一键清dist
+alias clean-dist='rm -rf dist build .next .turbo .cache'
+# 杀端口
+alias killport='lsof -i :$1 -sTCP:LISTEN -t | xargs -r kill -9'
+# 预览dist
+alias preview-dist='cd dist && python3 -m http.server 8080'
+# curl美化json
+alias cj='curl -s | jq .'
+
 #tmux
 
 alias hd="HBuilderX ."
