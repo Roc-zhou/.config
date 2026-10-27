@@ -28,14 +28,72 @@ alias gs="git status"
 alias gp="git pull"
 alias ga="git add ."
 
-# 一键清dist
-alias clean-dist='rm -rf dist build .next .turbo .cache'
-# 杀端口
-alias killport='lsof -i :$1 -sTCP:LISTEN -t | xargs -r kill -9'
-# 预览dist
+# ========== 【产物清理】最常用 ==========
+alias clean-dist='rm -rf dist build .next .nuxt .turbo .cache out .parcel-cache'
+# 彻底清：删掉 node_modules + lock（谨慎）
+alias clean-all='rm -rf node_modules && rm -f package-lock.json pnpm-lock.yaml yarn.lock'
+# 只清 vite 的缓存
+alias clean-vite='rm -rf node_modules/.vite'
+
+# ========== 【端口/进程】前端跑服务经常端口占用 ==========
+# 用法 killport 3000
+alias killport='f() { lsof -i :$1 -sTCP:LISTEN -t | xargs -r kill -9; };f'
+# 快速查谁占用端口
+alias findport='f() { lsof -i :$1; };f'
+
+# ========== 【打包产物预览 & 体积分析】 ==========
+# 预览 dist，8080端口
 alias preview-dist='cd dist && python3 -m http.server 8080'
-# curl美化json
+# 查找dist里大于 500k 的 js/css，找大包
+alias big-bundle='find ./dist -type f \( -name "*.js" -o -name "*.css" \) -size +500k -ls | sort -nrk7'
+# 统计dist总大小
+alias size-dist='du -sh dist'
+
+# ========== 【接口调试 curl + json美化（依赖jq）】 ==========
 alias cj='curl -s | jq .'
+alias cjpost='f() { curl -s -X POST -H "Content-Type:application/json" -d "$2" $1 | jq .; };f'
+# 示例：cjpost https://xxx/api/login '{"user":"a"}'
+
+# ========== 【Git 前端规范提交，非常省事】 ==========
+alias gfeat='git add . && git commit -m "feat: "'
+alias gfix='git add . && git commit -m "fix: "'
+alias gdocs='git add . && git commit -m "docs: "'
+alias gref='git add . && git commit -m "refactor: "'
+alias gstyle='git add . && git commit -m "style: "'
+alias gchore='git add . && git commit -m "chore: "'
+# 使用方式： gfeat "新增登录页"
+
+# ========== 【包管理器快捷（pnpm优先，现在前端主流）】 ==========
+alias pi='pnpm install'
+alias pr='pnpm run'
+alias pd='pnpm dev'
+alias pb='pnpm build'
+alias ps='pnpm serve'
+alias pu='pnpm update'
+# npm 备用，如果你混用
+alias ni='npm install'
+alias nr='npm run'
+alias nd='npm run dev'
+alias nb='npm run build'
+
+# ========== 【图片资源处理（需要 pngquant jpegoptim）】 ==========
+# 压缩当前目录所有图片
+alias img-min='find . -maxdepth 3 -name "*.png" -exec pngquant --quality=70-85 --force --ext .png {} \; && find . -maxdepth 3 -name "*.jpg" -exec jpegoptim --max=85 {} \;'
+
+# ========== 【monorepo 辅助，turborepo 常用】 ==========
+# 递归查找所有 node_modules
+alias scan-nm='find . -name "node_modules" -type d -prune'
+# 一键删除所有子包 node_modules（monorepo 大扫除，慎重！）
+alias clean-monorepo='find . -name "node_modules" -type d -prune -exec rm -rf {} \;'
+
+# ========== 【其他小工具】 ==========
+# 打开当前目录
+alias op='open .'
+# 格式化当前目录所有json（依赖jq）
+alias fmt-json='find . -name "*.json" -exec sh -c "jq . {} > {}.tmp && mv {}.tmp {}" \;'
+# 查看文件编码
+alias enca='file -I'
+
 
 #tmux
 
